@@ -1,4 +1,4 @@
 # .gitignore
 #Environment
 
-venv/
+/backend/.venv/
