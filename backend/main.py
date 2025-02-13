@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware #para hacer peticiones desde el frontend
 from routes.paste import paste
 
+
 app = FastAPI()
 
 #cors

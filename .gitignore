@@ -5,3 +5,4 @@
 __pycache__/
 node_modules/
 .env
+/backend/config/certs/ca.pem
