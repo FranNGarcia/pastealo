@@ -8,7 +8,10 @@ app = FastAPI()
 #cors
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[
+        "https://pastealo-frans-projects-6a36b969.vercel.app",
+        "https://pastealo.vercel.app/",
+        "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
