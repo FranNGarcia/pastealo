@@ -1,6 +1,11 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:8000/paste';
+//cambio de url dependiendo si estamos en produccion o desarrollo
+if (proccess.env.PRODUCTION == 1) {
+    const API_URL = procces.env.REACT_APP_API_URL;
+} else {
+    const API_URL = 'http://localhost:8000/paste';
+}
 
 export const getAllPastes = async () => {
     try {
