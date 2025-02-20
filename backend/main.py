@@ -1,7 +1,12 @@
 from fastapi import FastAPI
-from fastapi.middleware.cors import CORSMiddleware #para hacer peticiones desde el frontend
+from fastapi.middleware.cors import CORSMiddleware
+import os
+import httpx
+from fastapi_utils.tasks import repeat_every
+
 from routes.paste import paste
 
+BACKEND_API_URL = os.getenv("BACKEND_API_URL")
 
 app = FastAPI()
 
@@ -19,7 +24,23 @@ app.add_middleware(
 
 app.include_router(paste, prefix="/paste")
 
+# task scheduler para evitar que el backend entre en idle
+@app.on_event("startup")
+@repeat_every(seconds=540) # cada 9 minutos
+async def ping_despierto():
+    async with httpx.AsyncClient() as client:
+        try:
+            response = await client.get(BACKEND_API_URL+"/mantenerdespierto")
+            print(response.text)
+        except Exception as e:
+            print(e)
+
+
 @app.get("/")
 def read_root():
-    return "ase"
+    return "servidor vivo"
+
+@app.get("/mantenerdespierto")
+def mantener_despierto():
+    return "Vivo por 9min"
 
