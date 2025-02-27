@@ -1,5 +1,6 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from sqlalchemy.orm import Session
 import os
 import httpx
 from datetime import datetime, timedelta
@@ -32,7 +33,7 @@ app.include_router(paste, prefix="/paste")
 
 # task scheduler para evitar que el backend entre en idle
 @app.on_event("startup")
-@repeat_every(seconds=540)  # cada 9 minutos
+@repeat_every(seconds=65)  # cada 9 minutos
 async def ping_despierto():
     async with httpx.AsyncClient() as client:
         try:
@@ -41,13 +42,20 @@ async def ping_despierto():
         except Exception as e:
             print(e)
 
+
 @app.on_event("startup")
 @repeat_every(seconds=60 * 60 * 24)  # cada 24 hs
-async def borrar_pastes_vencidos():
-    async with SessionLocal() as db:
+def borrar_pastes_vencidos():
+    with SessionLocal() as db:
         tiempo_para_vencer = datetime.now() - timedelta(days=5)
-        db.query(PasteModel).filter(PasteModel.last_used < tiempo_para_vencer).delete()
-        db.commit()
+        try:
+            query = db.query(PasteModel).filter(
+                PasteModel.last_used < tiempo_para_vencer
+            )
+            query.delete()
+            db.commit()
+        except Exception as e:
+            print(f"error: {e}")
         print("pastes vencidos eliminados")
 
 
@@ -58,4 +66,4 @@ def read_root():
 
 @app.get("/mantenerdespierto")
 def mantener_despierto():
-    return "Vivo por 9min"
+    print("Vivo por 9min")
