@@ -1,6 +1,5 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy.orm import Session
 import os
 import httpx
 from datetime import datetime, timedelta
@@ -33,7 +32,7 @@ app.include_router(paste, prefix="/paste")
 
 # task scheduler para evitar que el backend entre en idle
 @app.on_event("startup")
-@repeat_every(seconds=65)  # cada 9 minutos
+@repeat_every(seconds=540)  # cada 9 minutos
 async def ping_despierto():
     async with httpx.AsyncClient() as client:
         try:
