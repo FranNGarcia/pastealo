@@ -1,22 +1,33 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './App.css'; // Import the CSS file
+import './App.css';
+import { getPasteById, postPasteApi } from './services/pasteAPI';
 
-import { getPasteById, postPasteApi} from './services/pasteAPI';
+// Importar componentes
+import Header from './components/Header';
+import PasteInput from './components/PasteInput';
+import PasteForm from './components/PasteForm';
+import SaveButton from './components/SaveButton';
 
 const App = () => {
   const [paste, setPaste] = useState('');
   const [keyId, setKeyId] = useState('');
+  const [loading, setLoading] = useState(false);
 
-
-  //los metodos para hacer las llamadas a la api
+  // Métodos para hacer las llamadas a la API
   const fetchPastes = async () => {
     try {
+      setLoading(true);
       const data = await getPasteById(keyId);
       setPaste(data.text);
     } catch (error) {
-      console.error('Error fetching paste:', error);
-      setPaste('');
+      if (error.response && error.response.status === 404) {
+        alert(`No se encontró el paste con ID: ${keyId}`);
+      } else {
+        alert('Se produjo un error al buscar el paste. Intentalo mas tarde.');
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -28,64 +39,39 @@ const App = () => {
       }
     } catch (error) {
       console.error('Error posting paste:', error);
-      
     }
   };
 
-  //los handles para los botones
+  // Handlers para los botones
   const handleBuscar = () => {
-    if (keyId){
+    if (keyId) {
       fetchPastes();
     }
-  }
+  };
 
   const handleGuardar = () => {
-    if (keyId && paste){
-      postPaste(keyId, paste);
+    if (keyId && paste) {
+      postPaste();
     }
-  }
+  };
 
   return (
     <div className="app-container">
       <div className="app-content">
-        <h4 className="mb-4 text-warning">&gt; Pastealo</h4>
-
-        {/* Key ID Input */}
-        <div className="mb-3">
-          <label htmlFor="keyId" className="form-label">Key del paste:</label>
-          <div className="input-group">
-            <input
-              type="text"
-              id="keyId"
-              className="form-control bg-dark text-light border-secondary"
-              placeholder="Ingrese la clave para recuperar el paste"
-              onChange={(e) => setKeyId(e.target.value)}
-              value={keyId}
-            />
-            <button className="btn btn-warning" onClick={handleBuscar}>Buscar</button>
-          </div>
-        </div>
-
-        {/* Content Textarea */}
-        <div className="mb-3">
-          <label htmlFor="content" className="form-label">Contenido del paste:</label>
-          <textarea
-            id="content"
-            className="form-control bg-dark text-light border-secondary"
-            rows="5"
-            placeholder="Pegá acá el texto que querés guardar"
-            value={paste}
-            onChange={(e) => setPaste(e.target.value)}
-          ></textarea>
-          <div className="d-flex justify-content-end">
-            <button className="btn btn-warning btn-sm mt-2">+</button>
-          </div>
-        </div>
-
-        {/* Upload Button */}
-        <div className="d-grid">
-          <button className="btn btn-warning" onClick={handleGuardar} >Guardar</button>
-        </div>
+        <Header />
+        <PasteInput
+          keyId={keyId}
+          setKeyId={setKeyId}
+          handleBuscar={handleBuscar}
+        />
+        <PasteForm
+          paste={paste}
+          setPaste={setPaste}
+          loading={loading}
+        />
+        <SaveButton
+          handleGuardar={handleGuardar}
+        />
       </div>
     </div>
   );

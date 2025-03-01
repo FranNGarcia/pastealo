@@ -51,7 +51,7 @@ def create_paste(paste: Paste, db: Session = Depends(get_db)):
 def update_paste(paste_key: str, text: str, db: Session = Depends(get_db)):
     db_paste = db.query(PasteModel).filter(PasteModel.paste_key == paste_key).first()
     if db_paste is None:
-        raise HTTPException(status_code=404, detail="Paste not found")
+        raise HTTPException(status_code=404, detail="Paste no encontrada")
     db_paste.text = text
     db.commit()
     return db_paste
@@ -61,7 +61,7 @@ def update_paste(paste_key: str, text: str, db: Session = Depends(get_db)):
 def delete_paste(paste_key: str, db: Session = Depends(get_db)):
     db_paste = db.query(PasteModel).filter(PasteModel.paste_key == paste_key).first()
     if db_paste is None:
-        raise HTTPException(status_code=404, detail="Paste not found")
+        raise HTTPException(status_code=404, detail="Paste no encontrada")
     db.delete(db_paste)
     db.commit()
     return paste_key + " borrado"
