@@ -1,6 +1,7 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import os
+from sqlalchemy import create_engine, text
 import httpx
 from datetime import datetime, timedelta
 from fastapi_utils.tasks import repeat_every
@@ -11,6 +12,8 @@ from models.paste import Paste as PasteModel
 from routes.paste import paste
 
 BACKEND_API_URL = os.getenv("BACKEND_API_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
+
 
 app = FastAPI()
 
@@ -29,6 +32,36 @@ app.add_middleware(
 
 app.include_router(paste, prefix="/paste")
 
+# migracion para añadir la col que me falta en bd de prod
+
+#def run_migration():
+#    engine = create_engine(DATABASE_URL)
+#    with engine.connect() as conn:
+#        try:
+#            # veo si existe la columna
+#            check_column = text("""
+#                SELECT COUNT(*) 
+#                FROM information_schema.COLUMNS 
+#                WHERE TABLE_NAME = 'pastes' 
+#                AND COLUMN_NAME = 'attachments'
+#                AND TABLE_SCHEMA = DATABASE()
+#            """)
+#
+#            result = conn.execute(check_column).scalar()
+#
+#            # añado la col si no existe
+#            if result == 0:
+#                conn.execute(
+#                    text("ALTER TABLE pastes ADD COLUMN attachments TEXT NULL")
+#                )
+#                conn.commit()
+#                print("Migracion hecha")
+#            else:
+#                print("Migracion no necesaria")
+#
+#        except Exception as e:
+#            print(f"Migration error: {e}")
+#run_migration()
 
 # task scheduler para evitar que el backend entre en idle
 @app.on_event("startup")
