@@ -5,17 +5,16 @@ import os
 
 # variables de entorno
 load_dotenv()
-
-# Get the Aiven database URL (with SSL parameters)
+#!
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-# Create the engine with SSL configuration
+# engine con parametros ssl
 engine = create_engine(
     DATABASE_URL,
     echo=True,  # Remove in production
     connect_args={
         "ssl": {
-            "ca": "./certs/ca.pem"  # Path to your Aiven CA certificate
+            "ca": "./certs/ca.pem"  # certificado CA de Aiven 
         }
     }
 )
@@ -23,7 +22,6 @@ engine = create_engine(
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 meta = MetaData()
 
-# Test the connection
 try:
     conn = engine.connect()
     print("conectado a la bd de Aiven")
