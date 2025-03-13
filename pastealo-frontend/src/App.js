@@ -12,17 +12,19 @@ import SaveButton from './components/SaveButton';
 const App = () => {
   const [paste, setPaste] = useState('');
   const [keyId, setKeyId] = useState('');
-  const [attachedFile, setAttachedFile] = useState([]);
+  const [attachedFile, setAttachedFile] = useState([]); // los archivos adjuntos pero no subidos
   const [loading, setLoading] = useState(false);
-  const [fileInfo, setFileInfo] = useState([]);
+  const [fetchedFileInfo, setfetchedFileInfo] = useState([]); // los archivos del paste
 
-  // Métodos para hacer las llamadas a la API
+  // metodos para hacer las llamadas a la API
   const fetchPastes = async () => {
     try {
       setLoading(true);
       const data = await getPasteById(keyId);
       setPaste(data.text);
-      setAttachedFile(data.attachedFile);
+      if (data.attachments && Array.isArray(data.attachments)) {
+        setfetchedFileInfo(data.attachments);
+      }
     } catch (error) {
       if (error.response && error.response.status === 404) {
         alert(`No se encontró el paste con ID: ${keyId}`);
@@ -34,8 +36,8 @@ const App = () => {
     }
   };
 
-  
 
+  // mas adelante cambiar para que se pueda subir mas de un archivo
   const handleUploadFile = async () => {
     try {
       const file = attachedFile[0];
@@ -58,24 +60,24 @@ const App = () => {
     if (keyId && (paste || attachedFile.length > 0)) {
       try {
         setLoading(true);
-        console.log('file info ', fileInfo);
-        let currentFileInfo = [...fileInfo];
-        console.log('current File Info: ', currentFileInfo);
+        console.log('file info ', fetchedFileInfo);
+        let currentfetchedFileInfo = [...fetchedFileInfo];
+        console.log('current File Info: ', currentfetchedFileInfo);
+
         if (attachedFile.length > 0) {
           var uploadResponse = await handleUploadFile();
           console.log('upload response: ', uploadResponse);
-          currentFileInfo = [...currentFileInfo, uploadResponse];
-          console.log('current File Info: ', currentFileInfo);
-          // Also update the state
-          setFileInfo(currentFileInfo);
+          currentfetchedFileInfo = [...currentfetchedFileInfo, uploadResponse];
+          console.log('current File Info: ', currentfetchedFileInfo);
+          setfetchedFileInfo(currentfetchedFileInfo);
         }
-        
-        // Pass the current file info directly
-        const data = await postPasteApi(keyId, paste, currentFileInfo); // al parecer tiene que estar en lista
-        
+
+        const data = await postPasteApi(keyId, paste, currentfetchedFileInfo);
+
         if (data) {
           alert('Paste guardado correctamente');
         }
+        setAttachedFile([]);
       } catch (error) {
         console.error('Error saving paste:', error);
         alert('Error al guardar el paste. Intentalo de nuevo.');
@@ -95,10 +97,14 @@ const App = () => {
           handleBuscar={handleBuscar}
         />
         <PasteForm
+          keyId={keyId}
           paste={paste}
           setPaste={setPaste}
           loading={loading}
           setAttachedFile={setAttachedFile}
+          attachedFile={attachedFile}
+          fetchedFileInfo={fetchedFileInfo}
+          setfetchedFileInfo={setfetchedFileInfo}
         />
         <SaveButton
           handleGuardar={handleGuardar}

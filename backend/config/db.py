@@ -5,7 +5,7 @@ import os
 
 # variables de entorno
 load_dotenv()
-
+#!
 DATABASE_URL = os.getenv("DATABASE_URL")
 
 # engine con parametros ssl

@@ -13,7 +13,7 @@ const PasteInput = ({ keyId, setKeyId, handleBuscar }) => {
           onChange={(e) => setKeyId(e.target.value)}
           value={keyId}
         />
-        <button className="btn btn-warning" onClick={handleBuscar}>Buscar</button>
+        <button className="btn btn-warning bi bi-search" onClick={handleBuscar}>Buscar</button>
       </div>
     </div>
   );

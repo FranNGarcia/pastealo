@@ -49,3 +49,37 @@ export const uploadFile = async (file) => {
         console.error(error);
     }
 }
+
+// funcion para borrar archivos
+export const deleteFile = async (fileURL, resource_type) => {
+    console.log('fileURL:', fileURL);
+    //limpio el url
+    fileURL = fileURL.split('/');
+    fileURL = fileURL[fileURL.length - 1];
+    //elimino la extension
+    fileURL = fileURL.split('.')[0];
+
+    //limpio resource_type porque solo acepta 3 tipos de formatos (los audios deben ser tratados como videos)
+    resource_type = resource_type.split('/')[0];
+    switch (resource_type) {
+        case 'image':
+            resource_type = 'image';
+            break;
+        case 'video':
+            resource_type = 'video';
+            break;
+        case 'audio':
+            resource_type = 'video';
+            break;
+        default:
+            resource_type = 'raw';
+            break;
+    }
+    try {
+        const response = await axios.delete(`${API_URL}/deletefile/?public_id=${fileURL}&resource_type=${resource_type}`);
+        console.log(response);
+        return response.data;
+    } catch (error) {
+        console.error(error);
+    }
+}

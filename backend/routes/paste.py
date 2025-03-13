@@ -26,7 +26,8 @@ def get_db():
     finally:
         db.close()
 
-# funcion para serializar el pate traido de la db a un dict
+
+# funcion para serializar el paste traido de la db a un dict
 def serialize_paste(paste_model):
     return {
         "paste_key": paste_model.paste_key,
@@ -65,14 +66,13 @@ def create_paste(paste: Paste, db: Session = Depends(get_db)):
         ON DUPLICATE KEY UPDATE text = :text, last_used = :last_used, attachments = :attachments
     """)
 
-    # Convert attachments to JSON string for storage in TEXT column
+    # paso los attachment json para almacenarlos en la columna TEXT
     attachments_json = None
     if paste.attachments and len(paste.attachments) > 0:
         try:
-            # Make sure we have valid attachment objects
             attachments_data = []
             for att in paste.attachments:
-                # Ensure we have name, url, and type
+                # aseguro de que hay nombre, url y tipo
                 att_dict = {
                     "name": str(att.name) if hasattr(att, "name") else "unnamed",
                     "url": str(att.url) if hasattr(att, "url") else "",
@@ -80,14 +80,13 @@ def create_paste(paste: Paste, db: Session = Depends(get_db)):
                 }
                 attachments_data.append(att_dict)
 
-            # Convert to JSON string
             attachments_json = json.dumps(attachments_data)
             print(f"Attachments JSON: {attachments_json}")
         except Exception as e:
-            print(f"Error serializing attachments: {e}")
-            attachments_json = "[]"  # Use empty array as fallback
+            print(f"Error serializando adjuntos: {e}")
+            attachments_json = "[]"  # si falla uso un array vacio
     else:
-        attachments_json = "[]"  # Empty array for no attachments
+        attachments_json = "[]"
 
     db.execute(
         stmt,
@@ -123,7 +122,9 @@ def delete_paste(paste_key: str, db: Session = Depends(get_db)):
     return paste_key + " borrado"
 
 
-# http methods de los attachements
+# HTTP METHODS DE LOS ARCHIVOS
+
+
 @paste.post("/upload", response_model=dict)
 async def upload_file(file: UploadFile = File(...)):
     try:
@@ -142,6 +143,17 @@ async def upload_file(file: UploadFile = File(...)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error uploading file: {str(e)}")
+
+
+@paste.delete("/deletefile/")
+async def delete_file(public_id: str, resource_type: str):
+    try:
+        result = cloudinary.uploader.destroy(
+            "pastealo/" + public_id, resource_type=resource_type, invalidate=True
+        )
+        return {"success": True, "result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting file: {str(e)}")
 
 
 # @paste.post("/", response_model=Paste)
