@@ -37,10 +37,9 @@ const App = () => {
   };
 
 
-  // mas adelante cambiar para que se pueda subir mas de un archivo
-  const handleUploadFile = async () => {
+  const handleUploadFile = async (file) => {
     try {
-      const file = attachedFile[0];
+      //const file = attachedFile[0];
       const response = await uploadFile(file);
       return response;
     } catch (error) {
@@ -63,9 +62,12 @@ const App = () => {
         let currentfetchedFileInfo = [...fetchedFileInfo];
 
         if (attachedFile.length > 0) {
-          var uploadResponse = await handleUploadFile();
-          currentfetchedFileInfo = [...currentfetchedFileInfo, uploadResponse];
-          setfetchedFileInfo(currentfetchedFileInfo);
+          for (let i = 0; i < attachedFile.length; i++) {
+            const file = attachedFile[i];
+            var uploadResponse = await handleUploadFile(file);
+            currentfetchedFileInfo = [...currentfetchedFileInfo, uploadResponse];
+            setfetchedFileInfo(currentfetchedFileInfo);
+          }
         }
 
         const data = await postPasteApi(keyId, paste, currentfetchedFileInfo);
@@ -74,6 +76,7 @@ const App = () => {
           alert('Paste guardado correctamente');
         }
         setAttachedFile([]);
+
       } catch (error) {
         console.error('Error saving paste:', error);
         alert('Error al guardar el paste. Intentalo de nuevo.');
