@@ -14,7 +14,7 @@ from routes.paste import paste
 BACKEND_API_URL = os.getenv("BACKEND_API_URL")
 DATABASE_URL = os.getenv("DATABASE_URL")
 
-
+#TODO una vez que hiciste un fetch y cambiaste el id no podes borrar el file que trajiste
 app = FastAPI()
 
 # cors
