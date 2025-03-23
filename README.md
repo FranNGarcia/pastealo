@@ -1,7 +1,7 @@
 <h1 align="center">
   <br>
 
-  <a href="http://www.amitmerchant.com/electron-markdownify">  <img src="https://github.com/user-attachments/assets/cd3c778e-e3cb-4ae9-aeb0-c5da9b8b4593" alt="Markdownify" width="75"></a>
+  <a href="https://pastealo.vercel.app/">  <img src="https://github.com/user-attachments/assets/cd3c778e-e3cb-4ae9-aeb0-c5da9b8b4593" alt="Markdownify" width="75"></a>
   <br>
   Pastealo
   <br>
@@ -19,9 +19,7 @@
 <p align="center">
   <a href="#características-principales">Características Principales</a> •
   <a href="#cómo-usar">Cómo Usar</a> •
-  <a href="#tecnologías">Tecnologías</a> •
-  <a href="#instalación">Instalación</a> •
-  <a href="#licencia">Licencia</a>
+  <a href="#tecnologías">Tecnologías</a>
 </p>
 
 ![screenshot](https://github.com/user-attachments/assets/b7091cee-4e1a-4c58-8a21-0d94a9306194)
@@ -62,13 +60,8 @@
 - MySQL
 
 
-### Requisitos previos
-- Node.js y npm
-- Python 3.8+
-- MySQL
 
 ---
 
-&nbsp;&middot;&nbsp;
 > GitHub [@FranNGarcia](https://github.com/FranNGarcia) &nbsp;&middot;&nbsp;
 > Email [Francisco_n_garcia@outlook.com](mailto:francisco_n_garcia@outlook.com)
