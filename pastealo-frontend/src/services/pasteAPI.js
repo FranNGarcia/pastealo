@@ -52,7 +52,6 @@ export const uploadFile = async (file) => {
 
 // funcion para borrar archivos
 export const deleteFile = async (fileURL, resource_type) => {
-    console.log('fileURL:', fileURL);
     //limpio el url
     fileURL = fileURL.split('/');
     fileURL = fileURL[fileURL.length - 1];
@@ -77,7 +76,6 @@ export const deleteFile = async (fileURL, resource_type) => {
     }
     try {
         const response = await axios.delete(`${API_URL}/deletefile/?public_id=${fileURL}&resource_type=${resource_type}`);
-        console.log(response);
         return response.data;
     } catch (error) {
         console.error(error);

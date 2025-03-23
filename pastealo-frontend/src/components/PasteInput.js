@@ -9,7 +9,7 @@ const PasteInput = ({ keyId, setKeyId, handleBuscar }) => {
           type="text"
           id="keyId"
           className="form-control bg-dark text-light border-secondary"
-          placeholder="Ingrese la clave para recuperar el paste"
+          placeholder="Clave para obtener o guardar el paste"
           onChange={(e) => setKeyId(e.target.value)}
           value={keyId}
         />

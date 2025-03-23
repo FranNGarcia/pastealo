@@ -13,10 +13,6 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
     const files = Array.from(event.target.files);
     if (files.length > 0) {
       setAttachedFile(prevFiles => [...prevFiles, ...files]);
-
-      //agrego los nombres de los archivos al paste
-      const fileNames = files.map(file => file.name).join(', ');
-      setPaste(prevPaste => prevPaste + `\n[Archivos adjuntos: ${fileNames}]\n`);
     }
   };
 

@@ -60,15 +60,11 @@ const App = () => {
     if (keyId && (paste || attachedFile.length > 0)) {
       try {
         setLoading(true);
-        console.log('file info ', fetchedFileInfo);
         let currentfetchedFileInfo = [...fetchedFileInfo];
-        console.log('current File Info: ', currentfetchedFileInfo);
 
         if (attachedFile.length > 0) {
           var uploadResponse = await handleUploadFile();
-          console.log('upload response: ', uploadResponse);
           currentfetchedFileInfo = [...currentfetchedFileInfo, uploadResponse];
-          console.log('current File Info: ', currentfetchedFileInfo);
           setfetchedFileInfo(currentfetchedFileInfo);
         }
 
