@@ -1,0 +1,17 @@
+.paste-overlay {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(20, 20, 30, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc107;
+  font-size: 2rem;
+  font-weight: bold;
+  pointer-events: none;
+  transition: background 0.2s;
+}
