@@ -128,9 +128,15 @@ def delete_paste(paste_key: str, db: Session = Depends(get_db)):
 @paste.post("/upload", response_model=dict)
 async def upload_file(file: UploadFile = File(...)):
     try:
-        # sube el archivo a cloudinary
+        # Detecta si es PDF
+        filename = file.filename.lower()
+        if filename.endswith('.pdf'):
+            resource_type = "raw"
+        else:
+            resource_type = "auto"
+
         result = cloudinary.uploader.upload(
-            file.file, resource_type="auto", folder="pastealo"
+            file.file, resource_type=resource_type, folder="pastealo"
         )
 
         return {
@@ -138,7 +144,7 @@ async def upload_file(file: UploadFile = File(...)):
             "file_info": {
                 "name": file.filename,
                 "url": result["secure_url"],
-                "type": file.content_type,
+                "type": result["resource_type"],
             },
         }
     except Exception as e:
