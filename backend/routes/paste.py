@@ -128,7 +128,7 @@ def delete_paste(paste_key: str, db: Session = Depends(get_db)):
 @paste.post("/upload", response_model=dict)
 async def upload_file(file: UploadFile = File(...)):
     try:
-        # Detecta si es PDF
+        # check si es pdf
         filename = file.filename.lower()
         if filename.endswith('.pdf'):
             resource_type = "raw"

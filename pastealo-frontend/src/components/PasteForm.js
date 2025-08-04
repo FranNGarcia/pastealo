@@ -5,6 +5,7 @@ import AttachmentSection from './AttachmentSection';
 const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFile, attachedFile, fetchedFileInfo, setfetchedFileInfo }) => {
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
+  const caracteresMax = 3075;
 
   // hace click en el input file
   const handleFileButtonClick = () => {
@@ -67,6 +68,14 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
       )}
       <div className="mb-3 position-relative">
         <label htmlFor="content" className="form-label">Contenido del paste:</label>
+        <div className="progress">
+          <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${(paste.length / caracteresMax) * 100}%` }} aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+        {paste.length > 2899 && (
+          <span className="text-secondary small">
+            {paste.length}/{caracteresMax} caracteres
+          </span>
+        )}
         <textarea
           id="content"
           className={`form-control bg-dark text-light border-secondary ${dragActive ? 'border-warning bg-secondary bg-opacity-25' : ''}`}
@@ -83,6 +92,7 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
+          maxLength={3075}
         ></textarea>
 
         {loading && (

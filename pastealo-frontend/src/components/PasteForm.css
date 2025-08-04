@@ -15,3 +15,12 @@
   pointer-events: none;
   transition: background 0.2s;
 }
+
+.progress {
+  height: 0.4rem; /* Cambia este valor para hacerla más fina o más gruesa */
+  min-height: unset;
+  margin-bottom: 0.75rem; /* Agrega espacio debajo de la barra */
+  width: 97%;
+  margin-left: 1.5%;
+  margin-top: 1.5%;
+}
