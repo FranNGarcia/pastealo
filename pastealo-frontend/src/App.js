@@ -15,6 +15,9 @@ const App = () => {
   const [attachedFile, setAttachedFile] = useState([]); // los archivos adjuntos pero no subidos
   const [loading, setLoading] = useState(false);
   const [fetchedFileInfo, setfetchedFileInfo] = useState([]); // los archivos del paste
+  // estados de las alertas
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMsg, setAlertMsg] = useState('');
 
   // metodos para hacer las llamadas a la API
   const fetchPastes = async () => {
@@ -86,28 +89,50 @@ const App = () => {
     }
   };
 
+  //funciones de las alertas
+  const showFileSizeAlert = (fileName, maxSize) => {
+    setAlertMsg(`El archivo "${fileName}" es demasiado grande. El tamaño maximo permitido es ${maxSize}MB.`);
+    setShowAlert(true);
+  };
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    setAlertMsg('');
+  };
+
   return (
     <div className="app-container">
-      <div className="app-content">
-        <Header />
-        <PasteInput
-          keyId={keyId}
-          setKeyId={setKeyId}
-          handleBuscar={handleBuscar}
-        />
-        <PasteForm
-          keyId={keyId}
-          paste={paste}
-          setPaste={setPaste}
-          loading={loading}
-          setAttachedFile={setAttachedFile}
-          attachedFile={attachedFile}
-          fetchedFileInfo={fetchedFileInfo}
-          setfetchedFileInfo={setfetchedFileInfo}
-        />
-        <SaveButton
-          handleGuardar={handleGuardar}
-        />
+      {/* Alert en la parte superior */}
+      {showAlert && (
+        <div className="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>¡Archivo demasiado grande!</strong> {alertMsg}
+          <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={handleCloseAlert}></button>
+        </div>
+      )}
+
+      {/* Wrapper para centrar el contenido */}
+      <div className="app-content-wrapper">
+        <div className="app-content">
+          <Header />
+          <PasteInput
+            keyId={keyId}
+            setKeyId={setKeyId}
+            handleBuscar={handleBuscar}
+          />
+          <PasteForm
+            keyId={keyId}
+            paste={paste}
+            setPaste={setPaste}
+            loading={loading}
+            setAttachedFile={setAttachedFile}
+            attachedFile={attachedFile}
+            fetchedFileInfo={fetchedFileInfo}
+            setfetchedFileInfo={setfetchedFileInfo}
+            showFileSizeAlert={showFileSizeAlert}
+          />
+          <SaveButton
+            handleGuardar={handleGuardar}
+          />
+        </div>
       </div>
     </div>
   );

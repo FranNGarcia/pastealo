@@ -1,11 +1,17 @@
 .app-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #0d1117;
   color: #c9d1d9;
   font-family: monospace;
+  display: flex;
+  flex-direction: column;
+}
+
+.app-content-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
 }
 
 .app-content {
@@ -24,4 +30,10 @@
 .form-control::placeholder {
   color: #6c757d;
   opacity: 1;
+}
+
+.alert {
+  margin: 0 !important;
+  border-radius: 0 !important;
+  z-index: 1050;
 }
