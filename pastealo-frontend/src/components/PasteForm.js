@@ -6,6 +6,20 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const caracteresMax = 3075;
+  const maxSize = 15 * 1024 * 1024; // 15MB
+
+  // funcion que valida el tamaño de los archivos
+  const filterValidFiles = (files, maxSize, showFileSizeAlert) => {
+    const validFiles = [];
+    files.forEach(file => {
+      if (file.size > maxSize) {
+        showFileSizeAlert(file.name, maxSize / 1024 / 1024);
+      } else {
+        validFiles.push(file);
+      }
+    });
+    return validFiles;
+  };
 
   // hace click en el input file
   const handleFileButtonClick = () => {
@@ -14,23 +28,13 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
 
   const handleFileChange = (event) => {
     const files = Array.from(event.target.files);
-    const maxSize = 15 * 1024 * 1024; // 5MB
-    const validFiles = [];
-    
-    if (files.length > 0) {
-      // valida cada archivo individualmente
-      files.forEach(file => {
-        if (file.size > maxSize) {
-          showFileSizeAlert(file.name, maxSize / 1024 /1024);
-        } else {
-          validFiles.push(file);
-        }
-      });
-      
-      // solo agrega los archivos validos
-      if (validFiles.length > 0) {
-        setAttachedFile(prevFiles => [...prevFiles, ...validFiles]);
-      }
+
+    // valida cada archivo individualmente
+    const validFiles = filterValidFiles(files, maxSize, showFileSizeAlert);
+
+    // solo agrega los archivos validos
+    if (validFiles.length > 0) {
+      setAttachedFile(prevFiles => [...prevFiles, ...validFiles]);
     }
     // sirve para volver a seleccionar el mismo archivo despues de sacarlo
     event.target.value = null;
@@ -44,12 +48,20 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
 
   const handlePaste = (event) => {
     const items = event.clipboardData.items;
+    const files = [];
     for (let i = 0; i < items.length; i++) {
       if (items[i].kind === 'file') {
         const file = items[i].getAsFile();
-        setAttachedFile(prevFiles => [...prevFiles, file]);
+        files.push(file);
         event.preventDefault();
       }
+    }
+    // valida cada archivo individualmente
+    const validFiles = filterValidFiles(files, maxSize, showFileSizeAlert);
+
+    // solo agrega los archivos validos
+    if (validFiles.length > 0) {
+      setAttachedFile(prevFiles => [...prevFiles, ...validFiles]);
     }
   };
 
@@ -57,8 +69,13 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
     event.preventDefault();
     setDragActive(false); // Quita el estado de drag
     const files = Array.from(event.dataTransfer.files);
-    if (files.length > 0) {
-      setAttachedFile(prevFiles => [...prevFiles, ...files]);
+
+    // valida cada archivo individualmente
+    const validFiles = filterValidFiles(files, maxSize, showFileSizeAlert);
+
+    // solo agrega los archivos validos
+    if (validFiles.length > 0) {
+      setAttachedFile(prevFiles => [...prevFiles, ...validFiles]);
     }
   };
 
