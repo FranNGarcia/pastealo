@@ -1,4 +1,9 @@
 import os
+import json
+
+import cloudinary
+import cloudinary.uploader
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine, text
@@ -28,6 +33,12 @@ app.add_middleware(
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+)
+
+cloudinary.config(
+    cloud_name=os.getenv("CLOUD_NAME"),
+    api_key=os.getenv("API_KEY"),
+    api_secret=os.getenv("API_SECRET"),
 )
 
 app.include_router(paste, prefix="/paste")
@@ -84,6 +95,18 @@ def borrar_pastes_vencidos():
             query = db.query(PasteModel).filter(
                 PasteModel.last_used < tiempo_para_vencer
             )
+            pastes_vencidos = query.all() #lista de los pastes para luego sacarles el id del url y borrarlos de cloudinary
+            print(pastes_vencidos)
+            for paste in pastes_vencidos:
+                if paste.attachments != "[]":
+                    parsedPaste = json.loads(paste.attachments)
+                    for attachment in parsedPaste:
+                        public_id = attachment["url"][-20:] #me quedo con el id del url
+                        try:
+                            res = cloudinary.uploader.destroy(f"pastealo/{public_id}", resource_type=attachment["type"])
+                            print(f"eliminado de cloudinary el {public_id} vencido: {res}")
+                        except Exception as e:
+                            print(f"Error eliminando {public_id} de cloudinary: {e}")
             query.delete()
             db.commit()
         except Exception as e:
