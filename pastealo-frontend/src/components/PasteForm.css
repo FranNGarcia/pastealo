@@ -24,3 +24,25 @@
   margin-left: 1.5%;
   margin-top: 1.5%;
 }
+
+.file-badges .badge {
+  display: flex;
+  align-items: center;
+  max-width: 150px;
+  padding-right: 0.5rem;
+  overflow: hidden;
+}
+
+.file-badges .badge-filename {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-badges .btn-close {
+  flex: 0 0 auto;
+  margin-left: 0.25rem;
+}
+

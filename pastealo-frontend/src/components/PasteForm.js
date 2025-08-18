@@ -151,14 +151,14 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
                 {attachedFile.map((file, index) => (
                   <span
                     key={index}
-                    className="badge bg-secondary me-1 mb-1 d-flex align-items-center"
-                    style={{ maxWidth: "150px", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}
+                    className="badge bg-secondary me-1 mb-1 d-flex align-items-center file-badges"
+                    style={{ maxWidth: "300px" }}
                     title={file.name}
                   >
-                    {file.name}
+                    <span className="badge-filename">{file.name}</span>
                     <button
                       className="btn-close btn-close-white ms-1 p-0"
-                      style={{ fontSize: "0.5rem" }}
+                      style={{ fontSize: "0.8rem" }}
                       onClick={() => handleRemoveAttachment(index)}
                       aria-label="Close"
                     ></button>
