@@ -11,7 +11,7 @@
 
 <p align="center">
   <!-- Puedes mantener o eliminar estos badges o agregar los tuyos propios -->
-  <a href="#"><img src="https://img.shields.io/badge/version-1.0.0-blue.svg"></a>
+  <a href="#"><img src="https://img.shields.io/badge/version-2.0.0-yellow.svg"></a>
   <a href="#"><img src="https://img.shields.io/badge/React-18.3.1-61DAFB.svg"></a>
   <a href="#"><img src="https://img.shields.io/badge/FastAPI-0.115.6-009688.svg"></a>
 </p>
@@ -22,16 +22,17 @@
   <a href="#tecnologías">Tecnologías</a>
 </p>
 
-![screenshot](https://github.com/user-attachments/assets/b7091cee-4e1a-4c58-8a21-0d94a9306194)
+![screenshot](https://github.com/user-attachments/assets/bdb3219a-be75-403d-a746-355e3d6883c2)
 
 ## Características Principales
 
 * **Sin registro requerido**: Usa el servicio sin necesidad de crear una cuenta. Evita ingresar credenciales en redes o dispositivos potencialmente comprometidos.
 * **Almacenamiento por clave**: Permite guardar y recuperar texto o archivos mediante una clave única
-* **Soporte para archivos adjuntos**: Sube y comparte cualquier tipo de archivos 
+* **Soporte para archivos adjuntos**: Sube y comparte cualquier tipo de archivos de hasta 15MB
 * **Interfaz intuitiva**: Diseño minimalista en modo oscuro para una experiencia agradable
 * **Expiración automática**: Los pastes se eliminan automáticamente después de 5 días sin uso
 * **Descarga de archivos**: Descarga fácilmente los archivos adjuntos al paste
+* Ahora con funcionalidad drag and drop y Ctrl+V para adjuntar archivos
 
 ## Cómo Usar
 
