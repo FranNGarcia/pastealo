@@ -1,8 +1,10 @@
 import React, { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './PasteForm.css';
 import AttachmentSection from './AttachmentSection';
 
 const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFile, attachedFile, fetchedFileInfo, setfetchedFileInfo, showFileSizeAlert }) => {
+  const { t } = useTranslation();
   const fileInputRef = useRef(null);
   const [dragActive, setDragActive] = useState(false);
   const caracteresMax = 3075;
@@ -85,7 +87,7 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
   };
 
   const handleDragLeave = (event) => {
-    // Solo desactiva si realmente sale del área del textarea
+    // Solo desactiva si realmente sale del area del textarea
     if (event.target === event.currentTarget) {
       setDragActive(false);
     }
@@ -99,13 +101,13 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
         </div>
       )}
       <div className="mb-3 position-relative">
-        <label htmlFor="content" className="form-label">Contenido del paste:</label>
+        <label htmlFor="content" className="form-label">{t('pasteForm.contentLabel')}</label>
         <div className="progress">
           <div className="progress-bar bg-warning" role="progressbar" style={{ width: `${(paste.length / caracteresMax) * 100}%` }} aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
         </div>
         {paste.length > 2899 && (
           <span className="text-secondary small">
-            {paste.length}/{caracteresMax} caracteres
+            {paste.length}/{caracteresMax} {t('pasteForm.charactersLabel')}
           </span>
         )}
         <textarea
@@ -114,8 +116,8 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
           rows="5"
           placeholder={
             dragActive
-              ? "Arrastre aquí para adjuntar archivos"
-              : (loading ? "Buscando..." : "Pegá acá el texto que querés guardar")
+              ? t('pasteForm.placeholder.dragActive')
+              : (loading ? t('pasteForm.placeholder.loading') : t('pasteForm.placeholder.default'))
           }
           value={paste}
           onChange={(e) => setPaste(e.target.value)}
@@ -131,7 +133,7 @@ const PasteForm = ({ keyId, paste, setPaste, loading, setLoading, setAttachedFil
           <div className="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center rounded"
             style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
             <div className="spinner-grow text-primary" role="status">
-              <span className="visually-hidden">Loading...</span>
+              <span className="visually-hidden">{t('pasteForm.loadingText')}</span>
             </div>
           </div>
         )}

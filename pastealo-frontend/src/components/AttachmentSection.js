@@ -1,7 +1,9 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { deleteFile, postPasteApi } from '../services/pasteAPI';
 
 const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteText }) => {
+  const { t } = useTranslation();
 
   const handleDeleteFile = async (file) => {
     try {
@@ -20,7 +22,7 @@ const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteTe
 
     } catch (error) {
       console.error('Error borrando archivo:', error);
-      alert('Error al borrar el archivo. Por favor intenta de nuevo mas tarde.');
+      alert(t('attachments.deleteError'));
     }
   };
 
@@ -28,7 +30,7 @@ const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteTe
     try {
       // spinner que deshabilita el boton de descarga mientras se descarga el archivo
       const button = document.activeElement;
-      button.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Descargando...';
+      button.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> ${t('attachments.downloading')}`;
       button.disabled = true;
 
       // traigo el archivo y lo convierto en un blob
@@ -53,15 +55,15 @@ const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteTe
       URL.revokeObjectURL(blobUrl);
 
       // vuelvo al estado inicial
-      button.innerHTML = 'Descargar';
+      button.innerHTML = t('attachments.download');
       button.disabled = false;
     } catch (error) {
       console.error('Error descargando archivo:', error);
-      alert('Error al descargar el archivo. Por favor intenta de nuevo mas tarde.');
+      alert(t('attachments.downloadError'));
 
       const button = document.activeElement;
       if (button) {
-        button.innerHTML = 'Descargar';
+        button.innerHTML = t('attachments.download');
         button.disabled = false;
       }
     }
@@ -70,7 +72,7 @@ const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteTe
   return (
     <div className="mt-3">
       <hr className="border-secondary" />
-      <h6 className="text-light mb-2">Archivos adjuntos al paste:</h6>
+      <h6 className="text-light mb-2">{t('attachments.title')}</h6>
       <div className="list-group bg-dark">
         {fetchedFileInfo.map((file, index) => (
           <div
@@ -85,7 +87,7 @@ const AttachmentSection = ({ fetchedFileInfo, setfetchedFileInfo, keyId, pasteTe
                 <i className="bi bi-trash-fill"></i>
               </button>
               <button className="btn btn-outline-warning btn-sm ms-2" onClick={() => handleDownloadFile(file)}>
-                Descargar
+                {t('attachments.download')}
               </button>
             </div>
           </div>

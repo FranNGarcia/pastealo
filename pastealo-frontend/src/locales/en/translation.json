@@ -1,0 +1,40 @@
+{
+  "header": {
+    "title": "Pastealo"
+  },
+  "pasteForm": {
+    "contentLabel": "Paste content:",
+    "charactersLabel": "characters",
+    "placeholder": {
+      "default": "Paste here the text you want to save",
+      "loading": "Searching...",
+      "dragActive": "Drag here to attach files"
+    },
+    "loadingText": "Loading..."
+  },
+  "attachments": {
+    "title": "Files attached to paste:",
+    "download": "Download",
+    "downloading": "Downloading...",
+    "downloadError": "Error downloading file. Please try again later.",
+    "deleteError": "Error deleting file. Please try again later."
+  },
+  "search": {
+    "label": "Paste key:",
+    "placeholder": "Key to get or save the paste",
+    "button": "Search",
+    "notFound": "Paste with ID not found: {{keyId}}",
+    "error": "An error occurred while searching for the paste. Try again later."
+  },
+  "save": {
+    "button": "Save",
+    "success": "Paste saved successfully!",
+    "successWithId": "Paste saved successfully! ID: {{keyId}}",
+    "error": "Error saving paste. Please try again later.",
+    "uploading": "Uploading files..."
+  },
+  "fileSizeAlert": {
+    "title": "File too large!",
+    "message": "The file \"{{fileName}}\" is too large. The maximum allowed size is {{maxSize}}MB."
+  }
+}

@@ -17,9 +17,9 @@
 }
 
 .progress {
-  height: 0.4rem; /* Cambia este valor para hacerla más fina o más gruesa */
+  height: 0.4rem; 
   min-height: unset;
-  margin-bottom: 0.75rem; /* Agrega espacio debajo de la barra */
+  margin-bottom: 0.75rem; 
   width: 97%;
   margin-left: 1.5%;
   margin-top: 1.5%;

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { getPasteById, postPasteApi, uploadFile } from './services/pasteAPI';
@@ -10,6 +11,7 @@ import PasteForm from './components/PasteForm';
 import SaveButton from './components/SaveButton';
 
 const App = () => {
+  const { t } = useTranslation();
   const [paste, setPaste] = useState('');
   const [keyId, setKeyId] = useState('');
   const [attachedFile, setAttachedFile] = useState([]); // los archivos adjuntos pero no subidos
@@ -30,9 +32,9 @@ const App = () => {
       }
     } catch (error) {
       if (error.response && error.response.status === 404) {
-        alert(`No se encontró el paste con ID: ${keyId}`);
+        alert(t('search.notFound', { keyId }));
       } else {
-        alert('Se produjo un error al buscar el paste. Intentalo mas tarde.');
+        alert(t('search.error'));
       }
     } finally {
       setLoading(false);
@@ -76,13 +78,13 @@ const App = () => {
         const data = await postPasteApi(keyId, paste, currentfetchedFileInfo);
 
         if (data) {
-          alert('Paste guardado correctamente');
+          alert(t('save.success'));
         }
         setAttachedFile([]);
 
       } catch (error) {
         console.error('Error saving paste:', error);
-        alert('Error al guardar el paste. Intentalo de nuevo.');
+        alert(t('save.error'));
       } finally {
         setLoading(false);
       }
@@ -91,7 +93,7 @@ const App = () => {
 
   //funciones de las alertas
   const showFileSizeAlert = (fileName, maxSize) => {
-    setAlertMsg(`El archivo "${fileName}" es demasiado grande. El tamaño maximo permitido es ${maxSize}MB.`);
+    setAlertMsg(t('fileSizeAlert.message', { fileName, maxSize }));
     setShowAlert(true);
   };
   const handleCloseAlert = () => {
@@ -104,7 +106,7 @@ const App = () => {
       {/* Alert en la parte superior */}
       {showAlert && (
         <div className="alert alert-warning alert-dismissible fade show" role="alert">
-          <strong>¡Archivo demasiado grande!</strong> {alertMsg}
+          <strong>{t('fileSizeAlert.title')}</strong> {alertMsg}
           <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close" onClick={handleCloseAlert}></button>
         </div>
       )}

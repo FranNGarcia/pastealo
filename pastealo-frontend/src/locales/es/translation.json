@@ -1,0 +1,40 @@
+{
+  "header": {
+    "title": "Pastealo"
+  },
+  "pasteForm": {
+    "contentLabel": "Contenido del paste:",
+    "charactersLabel": "caracteres",
+    "placeholder": {
+      "default": "Pega aca el texto que queres guardar",
+      "loading": "Buscando...",
+      "dragActive": "Arrastre aquí para adjuntar archivos"
+    },
+    "loadingText": "Loading..."
+  },
+  "attachments": {
+    "title": "Archivos adjuntos al paste:",
+    "download": "Descargar",
+    "downloading": "Descargando...",
+    "downloadError": "Error al descargar el archivo. Por favor intenta de nuevo mas tarde.",
+    "deleteError": "Error al borrar el archivo. Por favor intenta de nuevo mas tarde."
+  },
+  "search": {
+    "label": "Key del paste:",
+    "placeholder": "Clave para obtener o guardar el paste",
+    "button": "Buscar",
+    "notFound": "No se encontro el paste con ID: {{keyId}}",
+    "error": "Se produjo un error al buscar el paste. Intentalo mas tarde."
+  },
+  "save": {
+    "button": "Guardar",
+    "success": "Paste guardado correctamente",
+    "successWithId": "¡Paste guardado exitosamente! ID: {{keyId}}",
+    "error": "Error al guardar el paste. Intentalo de nuevo.",
+    "uploading": "Subiendo archivos..."
+  },
+  "fileSizeAlert": {
+    "title": "¡Archivo demasiado grande!",
+    "message": "El archivo \"{{fileName}}\" es demasiado grande. El tamaño maximo permitido es {{maxSize}}MB."
+  }
+}
