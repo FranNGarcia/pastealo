@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from config.db import SessionLocal
 from models.paste import Paste as PasteModel
 from schemas.paste import Paste
-from typing import List
 from sqlalchemy import text
 import json
 import cloudinary
@@ -40,15 +39,6 @@ def serialize_paste(paste_model):
 
 
 # http methods de los pastes
-@paste.get("/", response_model=List[Paste])
-def read_pastes(db: Session = Depends(get_db)):
-    pastes = db.query(PasteModel).all()
-    serialized_pastes: List[Paste] = []
-    for paste in pastes:
-        serialized_pastes.append(serialize_paste(paste))
-    return serialized_pastes
-
-
 @paste.get("/{paste_key}", response_model=Paste)
 def read_paste(paste_key: str, db: Session = Depends(get_db)):
     paste = db.query(PasteModel).filter(PasteModel.paste_key == paste_key).first()
