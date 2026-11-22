@@ -63,7 +63,10 @@ def create_paste(paste: Paste, db: Session = Depends(get_db)):
     stmt = text("""
         INSERT INTO pastes (paste_key, text, last_used, attachments)
         VALUES (:paste_key, :text, :last_used, :attachments)
-        ON DUPLICATE KEY UPDATE text = :text, last_used = :last_used, attachments = :attachments
+        ON CONFLICT (paste_key) DO UPDATE
+        SET text = EXCLUDED.text,
+            last_used = EXCLUDED.last_used,
+            attachments = EXCLUDED.attachments
     """)
 
     # paso los attachment json para almacenarlos en la columna TEXT

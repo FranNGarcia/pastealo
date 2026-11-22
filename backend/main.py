@@ -121,4 +121,11 @@ def read_root():
 
 @app.get("/mantenerdespierto")
 def mantener_despierto():
+    # un SELECT 1 genera actividad en la bd: el plan free de Aiven PostgreSQL
+    # puede apagar el servicio si no detecta uso continuo
+    try:
+        with SessionLocal() as db:
+            db.execute(text("SELECT 1"))
+    except Exception as e:
+        print(f"ping a la bd fallo: {e}")
     print("Vivo por 9min")

@@ -58,7 +58,7 @@
 - FastAPI
 - SQLAlchemy
 - Cloudinary (para almacenamiento de archivos)
-- MySQL
+- PostgreSQL
 
 
 
